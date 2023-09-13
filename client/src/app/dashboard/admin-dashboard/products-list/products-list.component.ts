@@ -9,7 +9,7 @@ import { ProductService } from 'src/app/services/product.service';
 export class ProductsListComponent implements OnInit {
   products: any[] = [];
   selectedSort: string = 'newest';
-  editingProductId: number | null = null;
+  editingProductId: string | null = null;
   editedProductData: any = {};
 
   constructor(private _product: ProductService) { }
@@ -29,7 +29,7 @@ export class ProductsListComponent implements OnInit {
     );
   }
 
-  deleteProduct(id: number) {
+  deleteProduct(id: string) {
     console.log('Deleting product with ID:', id);
     this._product.deleteProduct(id).subscribe(
       () => {
@@ -41,7 +41,7 @@ export class ProductsListComponent implements OnInit {
     );
   }
 
-  editOrSaveProduct(id: number) {
+  editOrSaveProduct(id: string) {
     if (this.editingProductId === id) {
       // Save the edited product
       this._product.updateProduct(id, this.editedProductData).subscribe(

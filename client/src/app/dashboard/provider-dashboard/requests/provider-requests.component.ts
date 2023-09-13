@@ -18,7 +18,7 @@ export class ProviderRequestsComponent {
   }
 
   getRequests() {
-    this.requestService.getRequestsBySupplier().subscribe(
+    this.requestService.getRequestsByProvider().subscribe(
       (data: any[]) => {
         this.requests = data;
         console.log(this.requests);

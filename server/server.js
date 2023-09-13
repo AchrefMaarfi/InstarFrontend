@@ -6,6 +6,11 @@ const app = express()
 const AuthRoute = require ('./routes/Auth')
 const ReviewRoute = require ('./routes/Review')
 const PromotionRoutes = require('./routes/Promotion');
+const SalesRoutes = require('./routes/Sales');
+const FournisseurRoutes = require('./routes/FournisseurRoutes');
+const DRoutes = require('./routes/Product3D');
+const RatingRoutes = require ('./routes/RatingRoutes')
+const RecRoutes = require ('./routes/ReclamationRoutes')
 
 app.use(morgan('dev'))
 app.use(bodyParser.urlencoded({extended: true}))
@@ -36,3 +41,9 @@ app.listen(PORT, ()=>{
 app.use('/api', AuthRoute)
 app.use('/api', ReviewRoute)
 app.use('/api', PromotionRoutes);
+app.use('/api', SalesRoutes);
+app.use('/api', FournisseurRoutes);
+app.use('/api', DRoutes);
+app.use('/api', RatingRoutes);
+app.use('/api', RecRoutes);
+

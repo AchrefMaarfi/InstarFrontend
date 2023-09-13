@@ -18,7 +18,7 @@ export class ProviderSalesComponent {
   }
 
   getSales() {
-    this.saleService.getSalesBySupplier().subscribe(
+    this.saleService.getSalesByProvider().subscribe(
       (data: any[]) => {
         this.sales = data;
         console.log(this.sales);

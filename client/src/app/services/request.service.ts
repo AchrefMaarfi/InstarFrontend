@@ -14,7 +14,7 @@ export class RequestService {
     return this.http.get<any[]>(`${this.apiUrl}/requests`);
   }
 
-  getRequestsBySupplier() {
+  getRequestsByProvider() {
     return this.http.get<any[]>(`${this.apiUrl}/requests`);
   }
 

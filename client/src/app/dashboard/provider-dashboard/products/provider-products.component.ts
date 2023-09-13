@@ -17,7 +17,7 @@ export class ProviderProductsComponent {
   }
 
   getProducts() {
-    this._product.getProductsBySupplier().subscribe(
+    this._product.getProductsByProvider("15").subscribe(
       (data: any) => {
         this.products = data;
       },

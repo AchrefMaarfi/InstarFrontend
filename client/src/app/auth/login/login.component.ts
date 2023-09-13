@@ -53,9 +53,14 @@ export class LoginComponent {
 
   login() {
     this.authService.login(this.username, this.password).subscribe(
-      () => {
+      (data: any) => {
         // Login success, redirection handled in the service
+        console.log(data);
+        if (data.userRole == "user") {
+          this.router.navigate(['/provider/dashboard']);
+        } else if( data.userRole == "admin" ){
         this.router.navigate(['/admin/dashboard']);
+        }
       },
       error => {
         // Handle login error, show error message to user

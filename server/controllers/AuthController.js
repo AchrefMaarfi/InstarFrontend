@@ -9,7 +9,7 @@ const register = async (req, res, next) => {
         const existingUser = await User.findOne({ email: email });
 
         if (existingUser) {
-            return res.status(500).json({ message: 'Email already exists' });
+            return res.json({ message: 'Email already exists' });
         }
 
         const hashedPass = await bcrypt.hash(req.body.password, 10);
@@ -24,9 +24,9 @@ const register = async (req, res, next) => {
         });
 
         await user.save();
-         res.status(200).json({ message: 'User added successfully' });
+        res.json({ message: 'User added successfully' });
     } catch (error) {
-        res.status(500).json({ message: 'Error occurred' });
+        res.json({ message: 'Error occurred' });
     }
 };
 
@@ -45,24 +45,31 @@ const login = (req, res, next) => {
                 if (result) {
                     let token = jwt.sign({ name: user.Firstname }, 'secretValue', { expiresIn: '1h' });
                     let refreshtoken = jwt.sign({ name: user.Firstname }, 'refreshtokensecret', { expiresIn: '48h' });
-
+                  const userPhone = user.phone;
+                  const userRole = user.role;
                     // Calculate the expiration date of the token
                     const expirationDate = new Date();
                     expirationDate.setHours(expirationDate.getHours() + 1); 
 
                     res.json({
-                        message: 'login successful',
+                      message: 'login successful',
+                      userPhone,
+                      userRole,
                         token,
                         refreshtoken,
                         tokenExpiration: moment(expirationDate).format('DD/MM/YYYY H:mm:ss')
                     });
                 } else {
-                    res.status(500).json({ message: 'password does not match' });
+                    res.json({
+                        message: 'password does not match!'
+                    });
                 }
             });
 
         } else {
-            res.status(500).json({ message: 'User not found' });
+            res.json({
+                message: 'no user found'
+            });
         }
     });
 };

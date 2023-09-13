@@ -14,7 +14,7 @@ export class SaleService {
     return this.http.get<any[]>(`${this.apiUrl}/sales`);
   }
 
-  getSalesBySupplier() {
+  getSalesByProvider() {
     return this.http.get<any[]>(`${this.apiUrl}/sales`);
   }
 }

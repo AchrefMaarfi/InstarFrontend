@@ -10,18 +10,18 @@ export class ProductService {
 
   private apiUrl = 'http://localhost:9000/api';
 
-  getProductsBySupplier() {
-    return this.http.get(`${this.apiUrl}/products`);
+  getProductsByProvider(id: string) {
+    return this.http.get(`${this.apiUrl}/products/fournisseur/${id}`);
   }
 
   getProducts() {
     return this.http.get(`${this.apiUrl}/products`);
   }
-  updateProduct(id: number, productData: any)  {
+  updateProduct(id: string, productData: any)  {
     return this.http.put(`${this.apiUrl}/products/${id}`, productData);
   }
 
-  deleteProduct(id: number) {
+  deleteProduct(id: string) {
     return this.http.delete(`${this.apiUrl}/products/${id}`);
   }
 }

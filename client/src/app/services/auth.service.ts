@@ -24,6 +24,8 @@ export class AuthService {
       tap((response: any) => {
         // Save token to local storage
         localStorage.setItem(this.tokenKey, response.token);
+        console.log(response);
+        localStorage.setItem("Phone", response.userPhone);
         // Redirect to some dashboard or protected route
         //this.router.navigate(['/dashboard']);
       }),

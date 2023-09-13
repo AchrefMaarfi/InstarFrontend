@@ -1,51 +1,64 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css',
-    '../../components/auth-illustration/auth-illustration.component.css']
+  styleUrls: ['./register.component.css', '../../components/auth-illustration/auth-illustration.component.css']
 })
-// ... imports and component decorator ...
-
 export class RegisterComponent implements OnInit {
-  registerform!: FormGroup;
-  image: any;
   registerError = '';
-
-  username = '';
-  password = '';
+  confirmPassword = '';
+  user = { username: '', email: '', phone: '', password: '' };
 
   // status bar color
-
+  isUsernameFilled: boolean = false;
   isEmailFilled: boolean = false;
+  isPhoneFilled: boolean = false;
   isPasswordFilled: boolean = false;
+  isConfirmPasswordFilled: boolean = false;
+  
+  usernameWarning: string = '';
   emailWarning: string = '';
+  phoneWarning: string = '';
+  passwordWarning: string = '';
+  confirmPasswordWarning: string = '';
 
-  // Function to check if email field is filled
+  image: any;
+
+  constructor(private authService: AuthService, private router: Router) { }
+
+  ngOnInit(): void { }
+
+  checkUsernameField() {
+    this.isUsernameFilled = this.user.username.trim() !== '';
+    if (!this.isUsernameFilled) {
+      this.usernameWarning = 'Please enter your Username';
+    }
+  }
+  
   checkEmailField() {
-    this.isEmailFilled = this.username.trim() !== '';
-
-    // Call the checkPasswordField() function only when the email field is filled
-    if (this.isEmailFilled) {
-      this.checkPasswordField();
-    } else {
-      // Reset isPasswordFilled when the email field is not filled
-      this.isPasswordFilled = false;
-
-      // Set the email warning message
-      this.emailWarning = 'Please enter your email first.';
+    this.isEmailFilled = this.user.email.trim() !== '';
+    if (!this.isEmailFilled) {
+      this.emailWarning = 'Please enter your email';
     }
   }
 
-  // Function to check if password field is filled
-  checkPasswordField() {
-    // Ensure that this function is only called when the email field is filled
-    this.isPasswordFilled = this.password.trim() !== '';
+  checkPhoneField() {
+    this.isPhoneFilled = this.user.phone.trim() !== '';
+    if (!this.isPhoneFilled) {
+      this.phoneWarning = 'Please enter your phone number';
+    }
+  }
 
+  checkPasswordField() {
+    this.isPasswordFilled = this.user.password.trim() !== '';
+    if (!this.isPasswordFilled) {
+      this.passwordWarning = 'Please enter your password';
+    }
+    
     if (this.isPasswordFilled && !this.isEmailFilled) {
       this.emailWarning = 'Please enter your email first.';
       this.isPasswordFilled = false;
@@ -53,39 +66,34 @@ export class RegisterComponent implements OnInit {
       this.emailWarning = '';
     }
   }
-  
-  inputIsFocused() {
-    
-  }
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) { }
-
-  ngOnInit(): void {
-    this.registerform = this.fb.group({
-      Firstname: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
-      Lastname: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
-      email: ['', [Validators.required, Validators.email]],
-      phone: ['', [Validators.required]],
-      password: ['', [Validators.required]],
-    });
+  checkConfirmPasswordField() {
+    this.isConfirmPasswordFilled = this.confirmPassword.trim() !== '';
+    if (!this.isConfirmPasswordFilled) {
+      this.confirmPasswordWarning = 'Please confirm your password';
+    }
   }
 
   register() {
-    if (this.registerform.invalid) {
-      return; // Form is invalid, don't proceed with registration
+    if (!this.isUsernameFilled || !this.isEmailFilled || !this.isPhoneFilled || !this.isPasswordFilled || !this.isConfirmPasswordFilled) {
+      this.registerError = 'Please fill in all required fields.';
+      return;
     }
-
-    this.authService.register(this.registerform.value)
+    
+    if (this.user.password !== this.confirmPassword) {
+      this.registerError = 'Passwords do not match.';
+      return;
+    }
+    
+    this.authService.register(this.user)
       .subscribe(
         () => {
           alert("Register Successful");
-          this.registerform.reset(); // Reset the form
           this.router.navigate(['login']);
         },
         error => {
           alert(`Register Failed: ${error.error.message}`);
           this.registerError = error.error.message;
-
         }
       );
   }
@@ -94,4 +102,3 @@ export class RegisterComponent implements OnInit {
     this.image = e.target.files[0];
   }
 }
-

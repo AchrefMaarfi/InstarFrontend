@@ -13,25 +13,25 @@
         their augmented reality experience
       </p>
       <div class="status-bar">
+        <div class="l" [ngClass]="{ b: isUsernameFilled }"></div>
         <div class="l" [ngClass]="{ b: isEmailFilled }"></div>
+        <div class="l" [ngClass]="{ b: isPhoneFilled }"></div>
         <div class="l" [ngClass]="{ b: isPasswordFilled }"></div>
-        <div class="l" [ngClass]="{ b: isPasswordFilled }"></div>
-        <div class="l" [ngClass]="{ b: isPasswordFilled }"></div>
-        <div class="l" [ngClass]="{ b: isPasswordFilled }"></div>
-        <div class="l" [ngClass]="{ b: isPasswordFilled }"></div>
+        <div class="l" [ngClass]="{ b: isConfirmPasswordFilled }"></div>
       </div>
       <form (ngSubmit)="register()" class="login-form">
         <label class="label">Username</label>
         <div class="form-group">
           <input
             type="text"
-            [(ngModel)]="username"
-            (ngModelChange)="checkEmailField()"
+            [(ngModel)]="user.username"
+            (ngModelChange)="checkUsernameField()"
             placeholder="Username"
             class="form-control"
             name="username"
+            required
           />
-          <div class="email-error login-error" *ngIf="emailWarning">
+          <div class="email-error login-error" *ngIf="!isUsernameFilled">
             {{ emailWarning }}
           </div>
         </div>
@@ -39,13 +39,14 @@
         <div class="form-group">
           <input
             type="text"
-            [(ngModel)]="username"
+            [(ngModel)]="user.email"
             (ngModelChange)="checkEmailField()"
             placeholder="Email"
             class="form-control"
             name="email"
+            required
           />
-          <div class="email-error login-error" *ngIf="emailWarning">
+          <div class="email-error login-error" *ngIf="!isEmailFilled">
             {{ emailWarning }}
           </div>
         </div>
@@ -53,38 +54,46 @@
         <div class="form-group">
           <input
             type="text"
-            [(ngModel)]="username"
-            (ngModelChange)="checkEmailField()"
+            [(ngModel)]="user.phone"
+            (ngModelChange)="checkPhoneField()"
             placeholder="Phone Number"
             class="form-control"
-            name="username"
+            name="phone"
+            required
           />
-          <div class="email-error login-error" *ngIf="emailWarning">
-            {{ emailWarning }}
+          <div class="email-error login-error" *ngIf="!isPhoneFilled">
+            {{ phoneWarning }}
           </div>
         </div>
-
         <label class="label">Password</label>
         <div class="form-group">
           <input
             type="password"
-            [(ngModel)]="password"
+            [(ngModel)]="user.password"
             (ngModelChange)="checkPasswordField()"
             placeholder="Password"
             class="form-control"
             name="password"
+            required
           />
+          <div class="email-error login-error" *ngIf="!isPasswordFilled">
+            {{ passwordWarning }}
+          </div>
         </div>
         <label class="label">Confirm Password</label>
         <div class="form-group">
           <input
             type="password"
-            [(ngModel)]="password"
-            (ngModelChange)="checkPasswordField()"
+            [(ngModel)]="confirmPassword"
+            (ngModelChange)="checkConfirmPasswordField()"
             placeholder="Confirm Password"
             class="form-control"
-            name="password"
+            name="confirmPassword"
+            required
           />
+          <div class="email-error login-error" *ngIf="!isConfirmPasswordFilled">
+            {{ confirmPasswordWarning }}
+          </div>
         </div>
         <div class="bs">
           <button type="submit" class="btn-primary">Register</button>
